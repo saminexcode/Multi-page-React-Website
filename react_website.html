@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lumora Studio — Creative Agency</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;700;900&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#faf8f4;--dark:#1a1614;--mid:#3d3530;--accent:#e85d26;--accent2:#f5a623;--text:#2c2420;--muted:#8b7d77;--border:#e8e2dc;--card:#ffffff;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;}
+  #root{min-height:100vh;}
+
+  /* NAV */
+  .nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.2rem 5%;display:flex;justify-content:space-between;align-items:center;background:rgba(250,248,244,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);}
+  .logo-text{font-family:'Fraunces',serif;font-size:1.4rem;font-weight:900;color:var(--dark);cursor:pointer;}
+  .logo-text em{color:var(--accent);font-style:normal;}
+  .nav-links{display:flex;gap:2.5rem;list-style:none;}
+  .nav-links a{color:var(--muted);text-decoration:none;font-size:.9rem;font-weight:500;cursor:pointer;transition:color .2s;}
+  .nav-links a:hover,.nav-links a.active{color:var(--accent);}
+  .nav-btn{background:var(--dark);color:#fff;border:none;padding:.55rem 1.4rem;border-radius:6px;font-size:.85rem;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;transition:background .2s;}
+  .nav-btn:hover{background:var(--accent);}
+
+  /* PAGES */
+  .page{display:none;padding-top:70px;}
+  .page.active{display:block;}
+
+  /* HOME */
+  .home-hero{min-height:90vh;display:flex;align-items:center;padding:0 5%;position:relative;overflow:hidden;}
+  .home-hero::before{content:'';position:absolute;right:-10%;top:10%;width:50%;height:80%;background:rgba(232,93,38,.04);border-radius:50%;pointer-events:none;}
+  .hero-content{max-width:700px;}
+  .hero-tag{display:inline-block;background:rgba(232,93,38,.08);color:var(--accent);border-radius:4px;padding:.3rem .8rem;font-size:.75rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:1.5rem;}
+  .hero-content h1{font-family:'Fraunces',serif;font-size:clamp(3rem,6vw,5rem);font-weight:900;line-height:1.05;margin-bottom:1.5rem;color:var(--dark);}
+  .hero-content h1 em{color:var(--accent);font-style:italic;}
+  .hero-content p{font-size:1.05rem;color:var(--muted);line-height:1.75;max-width:500px;margin-bottom:2.5rem;}
+  .hero-actions{display:flex;gap:1rem;align-items:center;}
+  .btn-dark{background:var(--dark);color:#fff;padding:.85rem 2rem;border-radius:8px;border:none;font-size:.9rem;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;transition:all .2s;}
+  .btn-dark:hover{background:var(--accent);}
+  .btn-link{color:var(--muted);font-size:.9rem;cursor:pointer;display:flex;align-items:center;gap:.3rem;transition:color .2s;border:none;background:none;font-family:'Outfit',sans-serif;font-weight:500;}
+  .btn-link:hover{color:var(--accent);}
+  .hero-scroll{display:flex;gap:3rem;margin-top:4rem;padding-top:2rem;border-top:1px solid var(--border);}
+  .scroll-num{font-family:'Fraunces',serif;font-size:2rem;font-weight:900;color:var(--dark);}
+  .scroll-label{font-size:.78rem;color:var(--muted);margin-top:.1rem;}
+
+  /* WORK GRID */
+  .section{padding:5rem 5%;}
+  .work-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:3rem;}
+  .work-card{border-radius:16px;overflow:hidden;background:var(--card);border:1px solid var(--border);cursor:pointer;transition:all .25s;}
+  .work-card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(0,0,0,.08);}
+  .work-card.featured{grid-column:span 2;}
+  .work-thumb{height:200px;display:flex;align-items:center;justify-content:center;font-size:3rem;}
+  .work-card.featured .work-thumb{height:280px;}
+  .work-info{padding:1.2rem 1.4rem;}
+  .work-cat{font-size:.72rem;color:var(--accent);font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:.4rem;}
+  .work-title{font-family:'Fraunces',serif;font-size:1.2rem;font-weight:700;color:var(--dark);margin-bottom:.3rem;}
+  .work-desc{font-size:.82rem;color:var(--muted);line-height:1.5;}
+
+  /* SERVICES PAGE */
+  .page-hero{padding:4rem 5% 2rem;}
+  .page-tag{display:inline-block;background:rgba(232,93,38,.08);color:var(--accent);border-radius:4px;padding:.3rem .8rem;font-size:.75rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:1rem;}
+  .page-title{font-family:'Fraunces',serif;font-size:clamp(2rem,4vw,3.5rem);font-weight:900;color:var(--dark);line-height:1.1;margin-bottom:1rem;}
+  .page-sub{color:var(--muted);font-size:1rem;max-width:480px;line-height:1.7;}
+  .services-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.5rem;margin-top:3rem;}
+  .svc-item{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:2rem;transition:all .25s;}
+  .svc-item:hover{border-color:var(--accent);box-shadow:0 8px 24px rgba(232,93,38,.08);}
+  .svc-num{font-family:'Fraunces',serif;font-size:2.5rem;font-weight:900;color:rgba(232,93,38,.15);margin-bottom:.8rem;}
+  .svc-item h4{font-weight:700;font-size:1rem;margin-bottom:.5rem;color:var(--dark);}
+  .svc-item p{color:var(--muted);font-size:.85rem;line-height:1.65;}
+  .price-tag{display:inline-block;background:rgba(232,93,38,.06);color:var(--accent);border-radius:4px;padding:.2rem .7rem;font-size:.75rem;font-weight:600;margin-top:.8rem;}
+
+  /* ABOUT PAGE */
+  .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;padding:3rem 5%;}
+  .about-avatar{width:100%;aspect-ratio:1;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:20px;display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-size:5rem;font-weight:900;color:#fff;}
+  .about-label{font-size:.75rem;font-weight:600;color:var(--accent);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.8rem;}
+  .about-name{font-family:'Fraunces',serif;font-size:2.5rem;font-weight:900;color:var(--dark);margin-bottom:.3rem;}
+  .about-role{color:var(--muted);margin-bottom:1.5rem;font-size:.95rem;}
+  .about-bio{color:var(--mid);font-size:.92rem;line-height:1.8;margin-bottom:2rem;}
+  .skills-wrap{display:flex;flex-wrap:wrap;gap:.5rem;}
+  .skill-tag{background:rgba(0,0,0,.04);border:1px solid var(--border);border-radius:6px;padding:.3rem .75rem;font-size:.78rem;font-weight:500;color:var(--mid);}
+
+  /* CONTACT PAGE */
+  .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;padding:2rem 5%;}
+  .contact-info h3{font-family:'Fraunces',serif;font-size:2rem;font-weight:900;margin-bottom:1rem;color:var(--dark);}
+  .contact-info p{color:var(--muted);line-height:1.7;margin-bottom:2rem;}
+  .contact-link{display:flex;align-items:center;gap:.8rem;padding:1rem 0;border-bottom:1px solid var(--border);color:var(--text);text-decoration:none;font-size:.9rem;font-weight:500;}
+  .contact-link:hover{color:var(--accent);}
+  .contact-form{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:2rem;}
+  .form-group{margin-bottom:1.2rem;}
+  .form-group label{display:block;font-size:.82rem;font-weight:600;color:var(--mid);margin-bottom:.4rem;}
+  .form-group input,.form-group textarea,.form-group select{width:100%;padding:.75rem 1rem;border:1px solid var(--border);border-radius:8px;font-size:.88rem;font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);transition:border-color .2s;outline:none;}
+  .form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:var(--accent);}
+  .form-group textarea{resize:vertical;min-height:100px;}
+  .submit-btn{width:100%;background:var(--dark);color:#fff;border:none;padding:.85rem;border-radius:8px;font-size:.9rem;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;transition:background .2s;}
+  .submit-btn:hover{background:var(--accent);}
+
+  /* FOOTER */
+  .site-footer{background:var(--dark);color:rgba(255,255,255,.6);padding:2rem 5%;display:flex;justify-content:space-between;align-items:center;font-size:.8rem;}
+  .footer-brand{font-family:'Fraunces',serif;font-size:1.1rem;font-weight:900;color:#fff;}
+  .footer-brand em{color:var(--accent);font-style:normal;}
+
+  @media(max-width:768px){.work-grid,.about-grid,.contact-grid{grid-template-columns:1fr;}.work-card.featured{grid-column:1;}.nav-links{display:none;}.about-avatar{display:none;}}
+</style>
+</head>
+<body>
+<div id="root">
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="logo-text" onclick="showPage('home')">Lumora<em>Studio</em></div>
+    <ul class="nav-links">
+      <li><a onclick="showPage('home')" id="nav-home" class="active">Home</a></li>
+      <li><a onclick="showPage('work')" id="nav-work">Work</a></li>
+      <li><a onclick="showPage('services')" id="nav-services">Services</a></li>
+      <li><a onclick="showPage('about')" id="nav-about">About</a></li>
+      <li><a onclick="showPage('contact')" id="nav-contact">Contact</a></li>
+    </ul>
+    <button class="nav-btn" onclick="showPage('contact')">Get a Quote</button>
+  </nav>
+
+  <!-- HOME PAGE -->
+  <div class="page active" id="page-home">
+    <section class="home-hero">
+      <div class="hero-content">
+        <span class="hero-tag">✦ Full Stack Developer & Designer</span>
+        <h1>We craft digital <em>experiences</em> that inspire</h1>
+        <p>Modern websites, interactive web apps, and powerful desktop software — built with precision, delivered with care.</p>
+        <div class="hero-actions">
+          <button class="btn-dark" onclick="showPage('work')">View Our Work</button>
+          <button class="btn-link" onclick="showPage('services')">Explore Services →</button>
+        </div>
+        <div class="hero-scroll">
+          <div><div class="scroll-num">50+</div><div class="scroll-label">Projects Done</div></div>
+          <div><div class="scroll-num">100%</div><div class="scroll-label">Satisfaction</div></div>
+          <div><div class="scroll-num">3+</div><div class="scroll-label">Years Exp.</div></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- WORK PAGE -->
+  <div class="page" id="page-work">
+    <div class="page-hero">
+      <span class="page-tag">Portfolio</span>
+      <h1 class="page-title">Our Work</h1>
+      <p class="page-sub">A selection of projects built with care, creativity, and clean code.</p>
+    </div>
+    <div class="section" style="padding-top:1rem">
+      <div class="work-grid">
+        <div class="work-card featured">
+          <div class="work-thumb" style="background:linear-gradient(135deg,#fdf2e9,#fdebd0);">🌟</div>
+          <div class="work-info">
+            <div class="work-cat">Web Development</div>
+            <div class="work-title">NexaTech Business Website</div>
+            <div class="work-desc">Full responsive Bootstrap website for a digital agency. Includes hero, services, process, and CTA sections.</div>
+          </div>
+        </div>
+        <div class="work-card">
+          <div class="work-thumb" style="background:linear-gradient(135deg,#e8f4fd,#d6eaf8);">🐍</div>
+          <div class="work-info">
+            <div class="work-cat">Desktop App</div>
+            <div class="work-title">Inventory Manager Pro</div>
+            <div class="work-desc">Python + MySQL desktop system with full CRUD, reports, and export.</div>
+          </div>
+        </div>
+        <div class="work-card">
+          <div class="work-thumb" style="background:linear-gradient(135deg,#eafaf1,#d5f5e3);">🛒</div>
+          <div class="work-info">
+            <div class="work-cat">E-commerce</div>
+            <div class="work-title">ShopDrop Product Page</div>
+            <div class="work-desc">Modern e-commerce product page with cart, image gallery, and reviews.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SERVICES PAGE -->
+  <div class="page" id="page-services">
+    <div class="page-hero">
+      <span class="page-tag">Services</span>
+      <h1 class="page-title">What We Build</h1>
+      <p class="page-sub">From simple landing pages to complex business systems — quality delivered every time.</p>
+    </div>
+    <div class="section" style="padding-top:1rem">
+      <div class="services-list">
+        <div class="svc-item"><div class="svc-num">01</div><h4>Business Website</h4><p>Fully responsive website with modern design, smooth animations, and all essential sections.</p><span class="price-tag">From $25</span></div>
+        <div class="svc-item"><div class="svc-num">02</div><h4>React Web App</h4><p>Dynamic multi-page app with React components, routing, and optional API integration.</p><span class="price-tag">From $60</span></div>
+        <div class="svc-item"><div class="svc-num">03</div><h4>E-commerce Page</h4><p>Product listing, cart, gallery and checkout flow — pixel-perfect and conversion optimized.</p><span class="price-tag">From $35</span></div>
+        <div class="svc-item"><div class="svc-num">04</div><h4>Desktop Application</h4><p>Python or Java GUI app with MySQL database for inventory, POS, or school management.</p><span class="price-tag">From $80</span></div>
+        <div class="svc-item"><div class="svc-num">05</div><h4>Landing Page</h4><p>High-converting single-page website for product launches, events, or marketing campaigns.</p><span class="price-tag">From $15</span></div>
+        <div class="svc-item"><div class="svc-num">06</div><h4>Portfolio Website</h4><p>Personal portfolio to showcase your skills, projects, and get hired by dream companies.</p><span class="price-tag">From $20</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ABOUT PAGE -->
+  <div class="page" id="page-about">
+    <div class="page-hero">
+      <span class="page-tag">About</span>
+      <h1 class="page-title">The Developer</h1>
+    </div>
+    <div class="about-grid">
+      <div class="about-avatar">S</div>
+      <div>
+        <div class="about-label">Full Stack Developer</div>
+        <div class="about-name">Sami Ullah Alimi</div>
+        <div class="about-role">@saminexcode · Kabul, Afghanistan</div>
+        <p class="about-bio">I'm a passionate full-stack web developer and desktop application builder with a love for clean code and stunning design. I specialize in creating modern, responsive websites and powerful desktop systems that help businesses grow.</p>
+        <div class="skills-wrap">
+          <span class="skill-tag">HTML5</span><span class="skill-tag">CSS3</span><span class="skill-tag">JavaScript</span><span class="skill-tag">React</span><span class="skill-tag">Bootstrap</span><span class="skill-tag">Python</span><span class="skill-tag">Java</span><span class="skill-tag">MySQL</span><span class="skill-tag">Git</span>
+        </div>
+        <div style="margin-top:2rem"><button class="btn-dark" onclick="showPage('contact')">Work With Me</button></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTACT PAGE -->
+  <div class="page" id="page-contact">
+    <div class="page-hero">
+      <span class="page-tag">Contact</span>
+      <h1 class="page-title">Let's Talk</h1>
+      <p class="page-sub">Ready to start your project? Get in touch and let's make it happen.</p>
+    </div>
+    <div class="contact-grid" style="padding-top:1rem">
+      <div class="contact-info">
+        <h3>Get in Touch</h3>
+        <p>Tell me about your project and I'll get back to you within 24 hours with a free quote and timeline.</p>
+        <a href="https://fiverr.com/saminexcode" class="contact-link">🟢 Fiverr — fiverr.com/saminexcode</a>
+        <a href="mailto:sami@example.com" class="contact-link">✉️ Email — sami@example.com</a>
+        <a href="https://github.com/saminexcode" class="contact-link">💻 GitHub — github.com/saminexcode</a>
+      </div>
+      <div class="contact-form">
+        <div class="form-group"><label>Your name</label><input type="text" placeholder="John Smith"></div>
+        <div class="form-group"><label>Email address</label><input type="email" placeholder="you@example.com"></div>
+        <div class="form-group"><label>Service needed</label>
+          <select>
+            <option>Website Development</option>
+            <option>React Web App</option>
+            <option>Desktop Application</option>
+            <option>E-commerce Page</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Project details</label><textarea placeholder="Tell me about your project..."></textarea></div>
+        <button class="submit-btn">Send Message →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-brand">Lumora<em>Studio</em></div>
+    <div>© 2025 Sami Ullah · @saminexcode</div>
+    <div><a href="https://fiverr.com/saminexcode" style="color:var(--accent);text-decoration:none;font-size:.8rem">Hire on Fiverr →</a></div>
+  </footer>
+
+</div>
+
+<script>
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  const navEl = document.getElementById('nav-' + name);
+  if(navEl) navEl.classList.add('active');
+  window.scrollTo(0, 0);
+}
+</script>
+</body>
+</html>
